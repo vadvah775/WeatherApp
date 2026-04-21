@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -55,7 +56,7 @@ public class AuthService {
         session.setUser(user);
         session.setExpiresAt(LocalDateTime.now().plusHours(SESSION_HOURS));
         sessionRepository.save(session);
-        return session.getId().toString(); // токен
+        return session.getId().toString(); // token
     }
 
     @Transactional
@@ -65,6 +66,19 @@ public class AuthService {
             UUID uuid = UUID.fromString(token);
             sessionRepository.findById(uuid).ifPresent(sessionRepository::delete);
         } catch (IllegalArgumentException ignored){}
+    }
+
+    @Transactional
+    public Optional<User> getUserByToken(String token) {
+        if(token == null) return Optional.empty();
+        try {
+            UUID uuid = UUID.fromString(token);
+            return sessionRepository.findById(uuid)
+                    .filter(session -> session.getExpiresAt().isAfter(LocalDateTime.now()))
+                    .map(Session::getUser);
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 
     @Autowired
@@ -86,4 +100,6 @@ public class AuthService {
     public void setRegistrationValidator(RegistrationValidator registrationValidator) {
         this.registrationValidator = registrationValidator;
     }
+
+
 }

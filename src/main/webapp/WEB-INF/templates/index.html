@@ -10,13 +10,22 @@
 <body>
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
             <img th:src="@{/images/weather-app.png}" alt="" width="30" height="24" class="d-inline-block align-text-top">
             Weather Tracker
         </a>
         <div class="d-flex align-items-center">
-            <span class="navbar-text me-3">zhukovsd</span>
-            <button class="btn btn-outline-danger">Sign out</button>
+            <div th:if="${username == null}">
+                <a th:href="@{/sign-in}" class="btn btn-outline-primary me-2">Sign In</a>
+                <a th:href="@{/sign-up}" class="btn btn-outline-secondary">Sign Up</a>
+            </div>
+
+            <div th:if="${username != null}">
+                <span class="navbar-text me-3" th:text="'Hello, ' + ${username}"></span>
+                <form method="post" th:action="@{/logout}" style="display: inline;">
+                    <button type="submit" class="btn btn-outline-danger">Sign out</button>
+                </form>
+            </div>
         </div>
     </div>
 </nav>

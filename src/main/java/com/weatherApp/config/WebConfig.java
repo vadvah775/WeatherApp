@@ -13,7 +13,7 @@ import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.weatherApp")
+@ComponentScan("com.weatherApp.controllers")
 public class WebConfig implements WebMvcConfigurer {
 
     @Bean

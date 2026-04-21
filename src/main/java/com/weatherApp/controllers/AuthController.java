@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AuthController {
 
     private AuthService authService;
+
+    private static final int SESSION_MAX_AGE_SECONDS = 24 * 60 * 60; // 24 hours (Or put it in application.properties)
 
     @GetMapping("/sign-up")
     public String showSignUpForm() {
@@ -58,8 +61,8 @@ public class AuthController {
     }
 
     @PostMapping("/sign-in")
-    public String processSignIn(String username,
-                                String password,
+    public String processSignIn(@RequestParam("username") String username,
+                                @RequestParam("password") String password,
                                 HttpServletResponse response,
                                 Model model) {
 
@@ -68,18 +71,18 @@ public class AuthController {
             Cookie cookie = new Cookie("weather_session", token);
             cookie.setHttpOnly(true);
             cookie.setPath("/");
-            cookie.setMaxAge(24 * 60 * 60); // todo выглядит как хардкод
+            cookie.setMaxAge(SESSION_MAX_AGE_SECONDS);
             response.addCookie(cookie);
             return "redirect:/";
         } catch (AuthException e) {
-            model.addAttribute("error", e.getMessage());
+            model.addAttribute("error", "Invalid username or password");
             return "auth/sign-in-with-errors";
         }
     }
 
     @PostMapping("/logout")
     public String logout(HttpServletResponse response,
-                         String token) {
+                         @CookieValue(value = "weather_session", required = false) String token) {
 
         if (token != null) {
             authService.logout(token);
