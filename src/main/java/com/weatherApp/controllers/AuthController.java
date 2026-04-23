@@ -8,6 +8,7 @@ import com.weatherApp.services.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -20,7 +21,8 @@ public class AuthController {
 
     private AuthService authService;
 
-    private static final int SESSION_MAX_AGE_SECONDS = 24 * 60 * 60; // 24 hours (Or put it in application.properties)
+    @Value("${session.max.age.seconds:86400}")
+    private int SESSION_MAX_AGE_SECONDS;
 
     @GetMapping("/sign-up")
     public String showSignUpForm() {

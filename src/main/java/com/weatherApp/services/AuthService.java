@@ -9,6 +9,7 @@ import com.weatherApp.repositories.UserRepository;
 import com.weatherApp.util.PasswordEncoder;
 import com.weatherApp.util.RegistrationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,8 @@ public class AuthService {
 
     private RegistrationValidator registrationValidator;
 
-    private static final long SESSION_HOURS = 24;
+    @Value("${session.max.age.hours:24}")
+    private long SESSION_HOURS;
 
     @Transactional
     public void register(String login, String rawPassword) {
