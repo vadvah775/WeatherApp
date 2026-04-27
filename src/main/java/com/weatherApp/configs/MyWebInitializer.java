@@ -1,4 +1,4 @@
-package com.weatherApp.config;
+package com.weatherApp.configs;
 
 import jakarta.servlet.Filter;
 import org.jspecify.annotations.Nullable;

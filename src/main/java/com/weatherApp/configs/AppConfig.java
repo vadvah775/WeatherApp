@@ -1,7 +1,8 @@
-package com.weatherApp.config;
+package com.weatherApp.configs;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ComponentScan(basePackages = {
@@ -10,5 +11,6 @@ import org.springframework.context.annotation.Configuration;
         "com.weatherApp.filters",
         "com.weatherApp.util"
 })
+@PropertySource("classpath:session.properties")
 public class AppConfig {
 }
