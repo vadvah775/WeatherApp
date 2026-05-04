@@ -2,8 +2,6 @@ package com.weatherApp.services;
 
 import com.weatherApp.BaseOpenWeatherTest;
 import com.weatherApp.dto.WeatherResponse;
-import com.weatherApp.exceptions.LocationNotFoundException;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,7 +21,7 @@ public class OpenWeatherServiceTest extends BaseOpenWeatherTest {
                 "coord": {"lat": 55.75, "lon": 37.62},
                 "name": "Moscow",
                 "main": {"temp": 20.5, "feels_like": 19.0, "humidity": 65},
-                "weather": [{"main": "Clear", "description": "ясно", "icon": "01d"}]
+                "weather": [{"main": "Clouds", "description": "few clouds", "icon": "01d"}]
             }
             """;
 
@@ -48,7 +46,7 @@ public class OpenWeatherServiceTest extends BaseOpenWeatherTest {
         assertNotNull(response);
         assertEquals("Moscow", response.getName());
         assertEquals(20.5, response.getMain().getTemp(), 0.01);
-        assertEquals("Clear", response.getWeather().get(0).getMain());
+        assertEquals("Clouds", response.getWeather().get(0).getMain());
     }
 
     @Test
@@ -69,7 +67,7 @@ public class OpenWeatherServiceTest extends BaseOpenWeatherTest {
         assertNotNull(response);
         assertEquals("Moscow", response.getName());
         assertEquals(20.5, response.getMain().getTemp(), 0.01);
-        assertEquals("Clear", response.getWeather().get(0).getMain());
+        assertEquals("Clouds", response.getWeather().get(0).getMain());
     }
 
     @Autowired

@@ -93,7 +93,7 @@ public class AuthController {
             cookie.setMaxAge(0);
             response.addCookie(cookie);
         }
-        return "redirect:/sign-in";
+        return "redirect:/";
     }
 
     @Autowired
