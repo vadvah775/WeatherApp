@@ -12,5 +12,6 @@ import org.springframework.context.annotation.PropertySource;
         "com.weatherApp.util"
 })
 @PropertySource("classpath:session.properties")
+@PropertySource("classpath:application.properties")
 public class AppConfig {
 }

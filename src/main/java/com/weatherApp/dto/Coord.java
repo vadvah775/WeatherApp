@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @NoArgsConstructor
-public class Wind {
-    private double speed;
-    private int deg;
+public class Coord {
+    private double lan;
+    private double lat;
 }
