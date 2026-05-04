@@ -60,10 +60,10 @@
                             <h3 class="card-title" th:text="${city.cityName} + ', ' + ${city.country}"></h3>
                             <p class="card-text mb-1">
                                 Feels like <span
-                                    th:text="${#numbers.formatDecimal(city.feelsLike, 1, 1)} + '°C'"></span>.
+                                    th:text="${#numbers.formatDecimal(city.feelsLike, 1, 1)} + '&deg;   C'"></span>.
                                 <span th:text="${city.description}"></span>
                             </p>
-                            <p class="card-text mb-1">Humidity: <span th:text="${city.humidity} + '%'">70%</span></p>
+                            <p class="card-text mb-1">Humidity: <span th:text="${city.humidity} + '%'"></span></p>
                         </div>
                     </div>
                 </div>

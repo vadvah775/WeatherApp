@@ -18,7 +18,8 @@ public class WeatherDisplayService {
         List<WeatherDisplayDto> result = new ArrayList<>();
 
         try {
-            WeatherResponse response = openWeatherService.getWeatherByName("Moscow");
+            System.out.println("start accessing to api");
+            WeatherResponse response = openWeatherService.getWeatherByName("Kazan");
             WeatherDisplayDto dto = mapToWeatherDisplayDto(response);
             System.out.println(dto);
             result.add(dto);
