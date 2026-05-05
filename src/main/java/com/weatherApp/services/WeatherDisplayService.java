@@ -2,6 +2,7 @@ package com.weatherApp.services;
 
 import com.weatherApp.dto.WeatherDisplayDto;
 import com.weatherApp.dto.WeatherResponse;
+import com.weatherApp.models.Location;
 import com.weatherApp.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.List;
 public class WeatherDisplayService {
 
     private OpenWeatherService openWeatherService;
+    private LocationService locationService;
 
     public List<WeatherDisplayDto> getWeatherForGuest() {
         List<WeatherDisplayDto> result = new ArrayList<>();
@@ -30,7 +32,23 @@ public class WeatherDisplayService {
     }
 
     public List<WeatherDisplayDto> getWeatherForUser(User user){
-        return new ArrayList<>();
+        List<Location> locations = locationService.getLocationByUser(user);
+        List<WeatherDisplayDto> result = new ArrayList<>();
+        for (Location loc : locations) {
+            try {
+                WeatherResponse response = openWeatherService.getWeatherByCoordinate(
+                        loc.getLatitude().doubleValue(),
+                        loc.getLongitude().doubleValue()
+                );
+                if (response != null) {
+                    WeatherDisplayDto dto = mapToWeatherDisplayDto(response);
+                    result.add(dto);
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to fetch weather for location " + loc.getName() + ": " + e.getMessage());
+            }
+        }
+        return result;
     }
 
     private WeatherDisplayDto mapToWeatherDisplayDto(WeatherResponse response){
@@ -56,5 +74,10 @@ public class WeatherDisplayService {
     @Autowired
     public void setOpenWeatherService(OpenWeatherService openWeatherService) {
         this.openWeatherService = openWeatherService;
+    }
+
+    @Autowired
+    public void setLocationService(LocationService locationService) {
+        this.locationService = locationService;
     }
 }
