@@ -1,11 +1,8 @@
 package com.weatherApp;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.weatherApp.configs.TestOpenWeatherConfig;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import com.weatherApp.config.TestOpenWeatherConfig;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;

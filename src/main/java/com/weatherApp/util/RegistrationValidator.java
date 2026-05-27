@@ -1,7 +1,7 @@
 package com.weatherApp.util;
 
-import com.weatherApp.exceptions.InvalidPasswordException;
-import com.weatherApp.exceptions.InvalidUsernameException;
+import com.weatherApp.exception.InvalidPasswordException;
+import com.weatherApp.exception.InvalidUsernameException;
 import org.springframework.stereotype.Component;
 
 @Component
