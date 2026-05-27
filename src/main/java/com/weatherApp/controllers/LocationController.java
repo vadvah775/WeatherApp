@@ -26,9 +26,9 @@ public class LocationController {
             return "redirect:/sign-in";
         }
 
-        boolean added = locationService.addLocationToUser(currentUser, lat, lon, name);
+        boolean added = locationService.addLocationOfUser(currentUser, lat, lon, name);
 
-        if (added){
+        if (added) {
             redirectAttributes.addFlashAttribute("success", "Location added!");
         } else {
             redirectAttributes.addFlashAttribute("error", "Location already exists.");
@@ -36,6 +36,27 @@ public class LocationController {
 
         return "redirect:/";
     }
+
+    @PostMapping("/locations/delete")
+    public String deleteLocation(
+                    @RequestParam("locationId") long locationId,
+                    HttpServletRequest request,
+                    RedirectAttributes redirectAttributes) {
+
+        User currentUser = (User) request.getAttribute("currentUser");
+        if (currentUser == null) {
+            return "redirect:/sign-in";
+        }
+
+        if (locationService.deleteLocationOfUser(currentUser, locationId)) {
+            redirectAttributes.addFlashAttribute("success", "Location deleted!");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Location not found or access denied");
+        }
+
+        return "redirect:/";
+    }
+
 
     @Autowired
     public void setLocationService(LocationService locationService) {

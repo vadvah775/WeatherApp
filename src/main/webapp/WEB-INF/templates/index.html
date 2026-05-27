@@ -10,7 +10,7 @@
 <body>
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href="@{/}">
             <img th:src="@{/images/weather-app.png}" alt="" width="30" height="24"
                  class="d-inline-block align-text-top">
             Weather Tracker
@@ -51,7 +51,10 @@
                 <div th:each="city : ${weatherList}" class="col-12 col-lg-3 col-md-6 mb-4">
                     <div class="card h-100 position-relative weather-card">
                         <div class="position-absolute weather-card-delete-form">
-                            <button class="btn-close" aria-label="Delete"></button>
+                            <form method="post" th:action="@{/locations/delete}" style="display: inline;">
+                                <input type="hidden" name="locationId" th:value="${city.locationId}"/>
+                                <button class="btn-close" aria-label="Delete"></button>
+                            </form>
                         </div>
                         <img class="card-img-top img-fluid"
                              th:src="'https://openweathermap.org/img/wn/' + ${city.iconCode} + '@4x.png'"
@@ -62,7 +65,7 @@
                             <h3 class="card-title" th:text="${city.cityName} + ', ' + ${city.country}"></h3>
                             <p class="card-text mb-1">
                                 Feels like <span
-                                    th:text="${#numbers.formatDecimal(city.feelsLike, 1, 1)} + '&deg;   C'"></span>.
+                                    th:text="${#numbers.formatDecimal(city.feelsLike, 1, 1)} + '&deg;C'"></span>.
                                 <span th:text="${city.description}"></span>
                             </p>
                             <p class="card-text mb-1">Humidity: <span th:text="${city.humidity} + '%'"></span></p>

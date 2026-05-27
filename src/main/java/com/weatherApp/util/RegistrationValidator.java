@@ -5,7 +5,7 @@ import com.weatherApp.exceptions.InvalidUsernameException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RegistrationValidator {
+public class  RegistrationValidator {
 
     private static final int MIN_USERNAME_LENGTH = 3;
     private static final int MAX_USERNAME_LENGTH = 50;

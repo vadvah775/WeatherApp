@@ -15,4 +15,5 @@ public class WeatherDisplayDto {
     private String description;
     private String iconCode;
     private int humidity;
+    private long locationId;
 }
