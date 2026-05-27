@@ -22,7 +22,7 @@ public class WeatherDisplayService {
         try {
             System.out.println("start accessing to api");
             WeatherResponse response = openWeatherService.getWeatherByName("Kazan");
-            WeatherDisplayDto dto = mapToWeatherDisplayDto(response);
+            WeatherDisplayDto dto = mapToWeatherDisplayDto(response, 0L);
             System.out.println(dto);
             result.add(dto);
         } catch (Exception e) {
@@ -41,7 +41,7 @@ public class WeatherDisplayService {
                         loc.getLongitude().doubleValue()
                 );
                 if (response != null) {
-                    WeatherDisplayDto dto = mapToWeatherDisplayDto(response);
+                    WeatherDisplayDto dto = mapToWeatherDisplayDto(response, loc.getId());
                     result.add(dto);
                 }
             } catch (Exception e) {
@@ -51,7 +51,7 @@ public class WeatherDisplayService {
         return result;
     }
 
-    private WeatherDisplayDto mapToWeatherDisplayDto(WeatherResponse response){
+    private WeatherDisplayDto mapToWeatherDisplayDto(WeatherResponse response, long locationId){
         if (response == null || response.getMain() == null || response.getWeather().isEmpty()){
             throw new RuntimeException("Invalid weather response");
         }
@@ -66,7 +66,8 @@ public class WeatherDisplayService {
                 feelsLikeC,
                 weather.getDescription(),
                 weather.getIcon(),
-                response.getMain().getHumidity()
+                response.getMain().getHumidity(),
+                locationId
         );
     }
 

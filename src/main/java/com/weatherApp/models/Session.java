@@ -1,14 +1,15 @@
 package com.weatherApp.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "sessions")
-@Data
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Session {
 
     @Id
@@ -21,4 +22,9 @@ public class Session {
 
     @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
+
+    public Session(User user, LocalDateTime expiresAt) {
+        this.user = user;
+        this.expiresAt = expiresAt;
+    }
 }

@@ -39,9 +39,7 @@ public class AuthService {
             throw new UserAlreadyExistsException(login);
         }
 
-        User user = new User();
-        user.setLogin(login);
-        user.setPassword(passwordEncoder.encode(rawPassword));
+        User user = new User(login, passwordEncoder.encode(rawPassword));
         userRepository.save(user);
     }
 
@@ -54,9 +52,7 @@ public class AuthService {
             throw new AuthException("Invalid credentials");
         }
 
-        Session session = new Session();
-        session.setUser(user);
-        session.setExpiresAt(LocalDateTime.now().plusHours(SESSION_HOURS));
+        Session session = new Session(user, LocalDateTime.now().plusHours(SESSION_HOURS));
         sessionRepository.save(session);
         return session.getId().toString(); // token
     }

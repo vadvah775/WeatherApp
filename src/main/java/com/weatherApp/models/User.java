@@ -1,11 +1,12 @@
 package com.weatherApp.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id
@@ -17,4 +18,9 @@ public class User {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
 }

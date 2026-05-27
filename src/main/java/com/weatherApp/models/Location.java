@@ -1,13 +1,17 @@
 package com.weatherApp.models;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "locations")
-@Data
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Location {
 
     @Id
@@ -17,7 +21,7 @@ public class Location {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -26,4 +30,11 @@ public class Location {
 
     @Column(name = "longitude")
     private BigDecimal longitude;
+
+    public Location(String name, User user, BigDecimal latitude, BigDecimal longitude) {
+        this.name = name;
+        this.user = user;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }
