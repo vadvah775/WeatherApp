@@ -1,7 +1,7 @@
 package com.weatherApp.service.impl;
 
-import com.weatherApp.dto.GeocodingResponse;
-import com.weatherApp.dto.WeatherResponse;
+import com.weatherApp.dto.openWeatherResponse.GeocodingResponse;
+import com.weatherApp.dto.openWeatherResponse.WeatherResponse;
 import com.weatherApp.exception.LocationNotFoundException;
 import com.weatherApp.exception.OpenWeatherApiException;
 import com.weatherApp.service.OpenWeatherService;

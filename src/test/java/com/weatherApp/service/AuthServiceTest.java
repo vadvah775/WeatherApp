@@ -1,6 +1,7 @@
 package com.weatherApp.service;
 
 import com.weatherApp.BaseIntegrationTest;
+import com.weatherApp.dto.CurrentUserDto;
 import com.weatherApp.exception.AuthException;
 import com.weatherApp.exception.UserAlreadyExistsException;
 import com.weatherApp.entity.Session;
@@ -89,13 +90,13 @@ public class AuthServiceTest extends BaseIntegrationTest {
         authService.register(login, password);
         String token = authService.login(login, password);
 
-        Optional<User> optUser = authService.getUserByToken(token);
+        Optional<CurrentUserDto> optUser = authService.getUserByToken(token);
         assertFalse(optUser.isPresent());
     }
 
     @Test
     public void getUserByToken_InvalidToken_ReturnsEmpty() {
-        Optional<User> optUser = authService.getUserByToken("not-a-uuid");
+        Optional<CurrentUserDto> optUser = authService.getUserByToken("not-a-uuid");
         assertFalse(optUser.isPresent());
     }
 

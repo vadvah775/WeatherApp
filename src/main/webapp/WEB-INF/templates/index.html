@@ -16,13 +16,13 @@
             Weather Tracker
         </a>
         <div class="d-flex align-items-center">
-            <div th:if="${username == null}">
+            <div th:if="${currentUser == null}">
                 <a th:href="@{/sign-in}" class="btn btn-outline-primary me-2">Sign In</a>
                 <a th:href="@{/sign-up}" class="btn btn-outline-secondary">Sign Up</a>
             </div>
 
-            <div th:if="${username != null}">
-                <span class="navbar-text me-3" th:text="'Hello, ' + ${username}"></span>
+            <div th:if="${currentUser != null}">
+                <span class="navbar-text me-3" th:text="'Hello, ' + ${currentUser.login}"></span>
                 <form method="post" th:action="@{/logout}" style="display: inline;">
                     <button type="submit" class="btn btn-outline-danger">Sign out</button>
                 </form>

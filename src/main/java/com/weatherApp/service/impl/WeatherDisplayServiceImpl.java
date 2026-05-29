@@ -1,17 +1,22 @@
 package com.weatherApp.service.impl;
 
+import com.weatherApp.dto.CurrentUserDto;
 import com.weatherApp.dto.WeatherDisplayDto;
-import com.weatherApp.dto.WeatherResponse;
+import com.weatherApp.dto.openWeatherResponse.WeatherResponse;
 import com.weatherApp.entity.Location;
 import com.weatherApp.entity.User;
+import com.weatherApp.exception.UserNotFoundException;
+import com.weatherApp.repository.UserRepository;
 import com.weatherApp.service.LocationService;
 import com.weatherApp.service.OpenWeatherService;
 import com.weatherApp.service.WeatherDisplayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WeatherDisplayServiceImpl implements WeatherDisplayService {
@@ -19,7 +24,10 @@ public class WeatherDisplayServiceImpl implements WeatherDisplayService {
     private OpenWeatherService openWeatherService;
     private LocationService locationService;
 
+    private UserRepository userRepository;
+
     @Override
+    @Transactional
     public List<WeatherDisplayDto> getWeatherForGuest() {
         List<WeatherDisplayDto> result = new ArrayList<>();
 
@@ -36,8 +44,13 @@ public class WeatherDisplayServiceImpl implements WeatherDisplayService {
     }
 
     @Override
-    public List<WeatherDisplayDto> getWeatherForUser(User user) {
-        List<Location> locations = locationService.getLocationByUser(user);
+    @Transactional
+    public List<WeatherDisplayDto> getWeatherForUser(CurrentUserDto currentUserDto) {
+        Optional<User> optUser = userRepository.findByLogin(currentUserDto.getLogin());
+        if(optUser.isEmpty()){
+            throw new UserNotFoundException("User with this username was not found");
+        }
+        List<Location> locations = locationService.getLocationByUser(optUser.get());
         List<WeatherDisplayDto> result = new ArrayList<>();
         for (Location loc : locations) {
             try {
@@ -78,14 +91,17 @@ public class WeatherDisplayServiceImpl implements WeatherDisplayService {
 
 
     @Autowired
-    @Override
     public void setOpenWeatherService(OpenWeatherService openWeatherService) {
         this.openWeatherService = openWeatherService;
     }
 
     @Autowired
-    @Override
     public void setLocationService(LocationService locationService) {
         this.locationService = locationService;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }

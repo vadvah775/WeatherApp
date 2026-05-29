@@ -1,14 +1,16 @@
-package com.weatherApp.dto;
+package com.weatherApp.dto.openWeatherResponse;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class WeatherResponse {
     private Coord coord;

@@ -1,5 +1,6 @@
 package com.weatherApp.service.impl;
 
+import com.weatherApp.dto.CurrentUserDto;
 import com.weatherApp.exception.AuthException;
 import com.weatherApp.exception.UserAlreadyExistsException;
 import com.weatherApp.entity.Session;
@@ -52,6 +53,7 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new AuthException("Invalid credentials"));
 
         if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
+            //TODO: если не кидать исключение на веб, то тут можно указывать более конкретную причину
             throw new AuthException("Invalid credentials");
         }
 
@@ -73,13 +75,14 @@ public class AuthServiceImpl implements AuthService {
 
     @Transactional
     @Override
-    public Optional<User> getUserByToken(String token) {
+    public Optional<CurrentUserDto> getUserByToken(String token) {
         if (token == null) return Optional.empty();
         try {
             UUID uuid = UUID.fromString(token);
             return sessionRepository.findById(uuid)
                     .filter(session -> session.getExpiresAt().isAfter(LocalDateTime.now()))
-                    .map(Session::getUser);
+                    .map(Session::getUser)
+                    .map(user -> new CurrentUserDto(user.getLogin()));
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }

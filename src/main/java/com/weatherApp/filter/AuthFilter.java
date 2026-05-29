@@ -1,5 +1,6 @@
 package com.weatherApp.filter;
 
+import com.weatherApp.dto.CurrentUserDto;
 import com.weatherApp.service.AuthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Optional;
 
 @Component
 public class AuthFilter extends OncePerRequestFilter {
@@ -32,9 +34,8 @@ public class AuthFilter extends OncePerRequestFilter {
         }
 
         if(token != null) {
-            authService.getUserByToken(token).ifPresent(user -> {
-                request.setAttribute("currentUser", user);
-            });
+            Optional<CurrentUserDto> user = authService.getUserByToken(token);
+            user.ifPresent(currentUserDto -> request.setAttribute("currentUser", currentUserDto));
         }
 
         filterChain.doFilter(request, response);

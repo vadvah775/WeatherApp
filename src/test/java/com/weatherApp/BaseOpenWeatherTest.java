@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
         "openweather.api.key=testKey",
         "openweather.api.lang=en"
 })
-public class BaseOpenWeatherTest {
+public abstract class BaseOpenWeatherTest {
     protected static WireMockServer wireMockServer;
 
     @Rule

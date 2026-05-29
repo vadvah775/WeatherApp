@@ -1,7 +1,7 @@
 package com.weatherApp.service;
 
-import com.weatherApp.dto.GeocodingResponse;
-import com.weatherApp.dto.WeatherResponse;
+import com.weatherApp.dto.openWeatherResponse.GeocodingResponse;
+import com.weatherApp.dto.openWeatherResponse.WeatherResponse;
 
 import java.util.List;
 

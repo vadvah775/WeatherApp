@@ -1,11 +1,13 @@
-package com.weatherApp.dto;
+package com.weatherApp.dto.openWeatherResponse;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Weather {
     private String main;

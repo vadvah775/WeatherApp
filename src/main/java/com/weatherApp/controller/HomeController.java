@@ -1,7 +1,7 @@
 package com.weatherApp.controller;
 
+import com.weatherApp.dto.CurrentUserDto;
 import com.weatherApp.dto.WeatherDisplayDto;
-import com.weatherApp.entity.User;
 import com.weatherApp.service.WeatherDisplayService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +18,13 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(HttpServletRequest request, Model model){
-        User user = (User) request.getAttribute("currentUser");
+        CurrentUserDto currentUser = (CurrentUserDto) request.getAttribute("currentUser");
         List<WeatherDisplayDto> weatherList;
 
-        if (user == null) {
+        if (currentUser == null) {
             weatherList = weatherDisplayService.getWeatherForGuest();
         } else {
-            weatherList = weatherDisplayService.getWeatherForUser(user);
-            model.addAttribute("username", user.getLogin());
+            weatherList = weatherDisplayService.getWeatherForUser(currentUser);
         }
 
         model.addAttribute("weatherList", weatherList);

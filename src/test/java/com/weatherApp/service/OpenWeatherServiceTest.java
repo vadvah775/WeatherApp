@@ -1,7 +1,7 @@
 package com.weatherApp.service;
 
 import com.weatherApp.BaseOpenWeatherTest;
-import com.weatherApp.dto.WeatherResponse;
+import com.weatherApp.dto.openWeatherResponse.WeatherResponse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,11 +1,10 @@
-package com.weatherApp.dto;
+package com.weatherApp.dto.openWeatherResponse;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class GeocodingResponse {

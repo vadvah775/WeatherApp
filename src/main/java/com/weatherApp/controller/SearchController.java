@@ -1,6 +1,6 @@
 package com.weatherApp.controller;
 
-import com.weatherApp.dto.GeocodingResponse;
+import com.weatherApp.dto.openWeatherResponse.GeocodingResponse;
 import com.weatherApp.entity.User;
 import com.weatherApp.service.OpenWeatherService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,10 +18,9 @@ public class SearchController {
     private OpenWeatherService openWeatherService;
 
     @GetMapping("/search")
-    public String search(@RequestParam("name") String query, Model model, HttpServletRequest request) {
-        User user = (User) request.getAttribute("currentUser");
-
-        if (user != null) model.addAttribute("username", user.getLogin());
+    public String search(@RequestParam("name") String query,
+                         Model model,
+                         HttpServletRequest request) {
         List<GeocodingResponse> results = openWeatherService.searchLocations(query);
         model.addAttribute("results", results);
         model.addAttribute("query", query);

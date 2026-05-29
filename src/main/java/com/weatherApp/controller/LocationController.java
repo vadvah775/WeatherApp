@@ -1,5 +1,6 @@
 package com.weatherApp.controller;
 
+import com.weatherApp.dto.CurrentUserDto;
 import com.weatherApp.entity.User;
 import com.weatherApp.service.LocationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ public class LocationController {
             @RequestParam("lon") double lon,
             HttpServletRequest request,
             RedirectAttributes redirectAttributes) {
-        User currentUser = (User) request.getAttribute("currentUser");
+        CurrentUserDto currentUser = (CurrentUserDto) request.getAttribute("currentUser");// TODO поменять user -> dto
         if (currentUser == null) {
             return "redirect:/sign-in";
         }
@@ -43,7 +44,7 @@ public class LocationController {
                     HttpServletRequest request,
                     RedirectAttributes redirectAttributes) {
 
-        User currentUser = (User) request.getAttribute("currentUser");
+        CurrentUserDto currentUser = (CurrentUserDto) request.getAttribute("currentUser");
         if (currentUser == null) {
             return "redirect:/sign-in";
         }
