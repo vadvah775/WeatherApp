@@ -12,6 +12,7 @@ import com.weatherApp.util.PasswordEncoder;
 import com.weatherApp.util.RegistrationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,6 +87,14 @@ public class AuthServiceImpl implements AuthService {
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }
+    }
+
+    @Scheduled(cron = "0 0 */1 * * *")
+    @Transactional
+    @Override
+    public void cleanExpiredSessions() {
+        sessionRepository.deleteExpiredSessions();
+        //TODO: добавить логгер, куда записывать сколько сессий было удалено
     }
 
     @Autowired

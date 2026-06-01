@@ -17,7 +17,9 @@ public class UserRepositoryImpl implements UserRepository {
     @PersistenceContext
     private EntityManager em;
 
-    @Transactional @Override public User save(User user) {
+    @Transactional
+    @Override
+    public User save(User user) {
         if (user.getId() == 0) {
             em.persist(user);
             return user;
@@ -26,26 +28,33 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-    @Override public Optional<User> findById(long id) {
+    @Override
+    public Optional<User> findById(long id) {
         User user = em.find(User.class, id);
         return Optional.ofNullable(user);
     }
 
-    @Override public Optional<User> findByLogin(String login) {
+    @Override
+    public Optional<User> findByLogin(String login) {
         TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.login = :login", User.class);
         query.setParameter("login", login);
         return query.getResultStream().findFirst();
     }
 
-    @Override public List<User> findAll() {
+    @Override
+    public List<User> findAll() {
         return em.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
 
-    @Transactional @Override public void delete(User user) {
+    @Transactional
+    @Override
+    public void delete(User user) {
         em.remove(em.contains(user) ? user : em.merge(user));
     }
 
-    @Transactional @Override public void deleteById(long id) {
+    @Transactional
+    @Override
+    public void deleteById(long id) {
         findById(id).ifPresent(this::delete);
     }
 

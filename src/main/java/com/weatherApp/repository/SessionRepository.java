@@ -15,4 +15,6 @@ public interface SessionRepository {
     Optional<Session> findByUser(User user);
 
     void delete(Session session);
+
+    int deleteExpiredSessions();
 }

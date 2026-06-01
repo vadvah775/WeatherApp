@@ -1,7 +1,6 @@
 package com.weatherApp.controller;
 
 import com.weatherApp.dto.openWeatherResponse.GeocodingResponse;
-import com.weatherApp.entity.User;
 import com.weatherApp.service.OpenWeatherService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

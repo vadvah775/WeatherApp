@@ -35,7 +35,6 @@ public class WeatherDisplayServiceImpl implements WeatherDisplayService {
             System.out.println("start accessing to api");
             WeatherResponse response = openWeatherService.getWeatherByName("Kazan");
             WeatherDisplayDto dto = mapToWeatherDisplayDto(response, 0L);
-            System.out.println(dto);
             result.add(dto);
         } catch (Exception e) {
             throw new RuntimeException("Failed to get weather for default city");

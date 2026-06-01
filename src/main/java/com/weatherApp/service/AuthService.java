@@ -1,8 +1,6 @@
 package com.weatherApp.service;
 
 import com.weatherApp.dto.CurrentUserDto;
-import com.weatherApp.entity.User;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -14,4 +12,6 @@ public interface AuthService {
     void logout(String token);
 
     Optional<CurrentUserDto> getUserByToken(String token);
+
+    void cleanExpiredSessions();
 }
