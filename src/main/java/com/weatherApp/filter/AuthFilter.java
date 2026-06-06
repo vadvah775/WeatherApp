@@ -1,12 +1,15 @@
 package com.weatherApp.filter;
 
 import com.weatherApp.dto.CurrentUserDto;
+import com.weatherApp.exception.OpenWeatherApiException;
 import com.weatherApp.service.AuthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -17,6 +20,8 @@ import java.util.Optional;
 
 @Component
 public class AuthFilter extends OncePerRequestFilter {
+
+    private static final Logger log = LoggerFactory.getLogger(AuthFilter.class);
 
     private AuthService authService;
 
@@ -38,7 +43,29 @@ public class AuthFilter extends OncePerRequestFilter {
             user.ifPresent(currentUserDto -> request.setAttribute("currentUser", currentUserDto));
         }
 
-        filterChain.doFilter(request, response);
+        try {
+            filterChain.doFilter(request, response);
+        } catch (ServletException e) {
+            if (e.getCause() instanceof OpenWeatherApiException){
+                log.warn("Error when calling external API", e);
+                handleError(request, response, "Couldn't get data from an external API. Please try again later.");
+            } else {
+                log.error("Error when running the servlet", e);
+                handleError(request, response, "We're sorry, but an unexpected error has occurred. Please try again later.");
+            }
+        } catch (Exception e) {
+            log.error("Unexpected error in filter", e);
+            handleError(request, response, "We're sorry, but an unexpected error has occurred. Please try again later.");
+        }
+    }
+
+    private void handleError(HttpServletRequest request,
+                              HttpServletResponse response,
+                              String errorMessage) throws ServletException, IOException {
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+        request.setAttribute("errorMessage", errorMessage);
+        request.getRequestDispatcher("/error").forward(request, response);
     }
 
     @Autowired

@@ -5,11 +5,14 @@ import com.weatherApp.exception.AuthException;
 import com.weatherApp.exception.UserAlreadyExistsException;
 import com.weatherApp.entity.Session;
 import com.weatherApp.entity.User;
+import com.weatherApp.filter.AuthFilter;
 import com.weatherApp.repository.SessionRepository;
 import com.weatherApp.repository.UserRepository;
 import com.weatherApp.service.AuthService;
 import com.weatherApp.util.PasswordEncoder;
 import com.weatherApp.util.RegistrationValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -31,6 +34,8 @@ public class AuthServiceImpl implements AuthService {
 
     private RegistrationValidator registrationValidator;
 
+    private static final Logger log = LoggerFactory.getLogger(AuthFilter.class);
+
     @Value("${session.max.age.hours:24}")
     private long SESSION_HOURS;
 
@@ -51,11 +56,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String login(String login, String rawPassword) {
         User user = userRepository.findByLogin(login)
-                .orElseThrow(() -> new AuthException("Invalid credentials"));
+                .orElseThrow(() -> new AuthException("Error when finding the user by username"));
 
         if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
-            //TODO: если не кидать исключение на веб, то тут можно указывать более конкретную причину
-            throw new AuthException("Invalid credentials");
+            throw new AuthException("Password does not match password from the database");
         }
 
         Session session = new Session(user, LocalDateTime.now().plusHours(SESSION_HOURS));
@@ -93,8 +97,8 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     @Override
     public void cleanExpiredSessions() {
-        sessionRepository.deleteExpiredSessions();
-        //TODO: добавить логгер, куда записывать сколько сессий было удалено
+        int countOfDeletedSessions = sessionRepository.deleteExpiredSessions();
+        log.info("{}sessions deleted", countOfDeletedSessions);
     }
 
     @Autowired

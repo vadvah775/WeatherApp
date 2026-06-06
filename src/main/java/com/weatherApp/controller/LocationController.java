@@ -21,7 +21,7 @@ public class LocationController {
             @RequestParam("lon") double lon,
             HttpServletRequest request,
             RedirectAttributes redirectAttributes) {
-        CurrentUserDto currentUser = (CurrentUserDto) request.getAttribute("currentUser");// TODO поменять user -> dto
+        CurrentUserDto currentUser = (CurrentUserDto) request.getAttribute("currentUser");
         if (currentUser == null) {
             return "redirect:/sign-in";
         }

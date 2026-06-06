@@ -6,10 +6,13 @@ import com.weatherApp.dto.openWeatherResponse.WeatherResponse;
 import com.weatherApp.entity.Location;
 import com.weatherApp.entity.User;
 import com.weatherApp.exception.UserNotFoundException;
+import com.weatherApp.filter.AuthFilter;
 import com.weatherApp.repository.UserRepository;
 import com.weatherApp.service.LocationService;
 import com.weatherApp.service.OpenWeatherService;
 import com.weatherApp.service.WeatherDisplayService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,18 +29,20 @@ public class WeatherDisplayServiceImpl implements WeatherDisplayService {
 
     private UserRepository userRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(AuthFilter.class);
+
     @Override
     @Transactional
     public List<WeatherDisplayDto> getWeatherForGuest() {
         List<WeatherDisplayDto> result = new ArrayList<>();
 
         try {
-            System.out.println("start accessing to api");
+            log.info("start accessing to api");
             WeatherResponse response = openWeatherService.getWeatherByName("Kazan");
             WeatherDisplayDto dto = mapToWeatherDisplayDto(response, 0L);
             result.add(dto);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to get weather for default city");
+            log.error("Error when finding a location for a guest", e);
         }
         return result;
     }
@@ -62,7 +67,7 @@ public class WeatherDisplayServiceImpl implements WeatherDisplayService {
                     result.add(dto);
                 }
             } catch (Exception e) {
-                System.err.println("Failed to fetch weather for location " + loc.getName() + ": " + e.getMessage());
+                log.error("Error when finding a location for a user", e);
             }
         }
         return result;

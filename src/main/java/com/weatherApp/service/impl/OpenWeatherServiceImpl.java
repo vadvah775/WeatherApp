@@ -82,6 +82,9 @@ public class OpenWeatherServiceImpl implements OpenWeatherService {
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response == null) {
+                throw new OpenWeatherApiException("api connection error");
+            }
 
             if (response.statusCode() == 200) {
                 return objectMapper.readValue(response.body(), WeatherResponse.class);
