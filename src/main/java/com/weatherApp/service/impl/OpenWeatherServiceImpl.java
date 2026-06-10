@@ -11,9 +11,11 @@ import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,14 +47,16 @@ public class OpenWeatherServiceImpl implements OpenWeatherService {
 
     @Override
     public WeatherResponse getWeatherByName(String name) {
-        String url = String.format("%s?q=%s&appid=%s&lang=%s", apiUrl, name, key, lang);
+        String encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8);
+        String url = String.format("%s?q=%s&appid=%s&lang=%s", apiUrl, encodedName, key, lang);
 
         return getWeatherResponse(url);
     }
 
     @Override
     public List<GeocodingResponse> searchLocations(String query) {
-        String url = String.format(Locale.US, "%s?q=%s&limit=5&appid=%s&lang=%s", geoUrl, query, key, lang);
+        String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
+        String url = String.format(Locale.US, "%s?q=%s&limit=5&appid=%s&lang=%s", geoUrl, encodedQuery, key, lang);
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
